@@ -1,7 +1,5 @@
 import type e = require('express');
-import { Candidate } from '../models/candidate';
-import QueryTypes = require('sequelize/lib/query-types');
-import UPDATE = require('sequelize/lib/query-types');
+import { Candidate } from '../models';
 
 export const candidatesController = {
     index: async (req: e.Request, res: e.Response) => {

@@ -12,7 +12,16 @@ module.exports = {
       title: Sequelize.STRING,
       description: Sequelize.TEXT,
       limit_date: Sequelize.DATE,
-      company_id: Sequelize.INTEGER,
+      company_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'companies',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
