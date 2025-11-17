@@ -25,5 +25,9 @@ router.delete('/companies/:id', companiesController.companiesController.delete);
 
 // Job routes
 router.get('/jobs', jobsController.jobsController.index);
+router.post('/jobs', jobsController.jobsController.save);
+router.get('/jobs/:id', jobsController.jobsController.show);
+router.put('/jobs/:id', jobsController.jobsController.update);
+router.delete('/jobs/:id', jobsController.jobsController.delete);
 
 export { router };
