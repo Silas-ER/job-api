@@ -30,4 +30,9 @@ router.get('/jobs/:id', jobsController.jobsController.show);
 router.put('/jobs/:id', jobsController.jobsController.update);
 router.delete('/jobs/:id', jobsController.jobsController.delete);
 
+// Candidate-Job association routes
+router.post('/jobs/:jobId/addCandidate', jobsController.jobsController.addCandidate);
+router.post('/jobs/:jobId/removeCandidate', jobsController.jobsController.removeCandidate);
+router.get('/jobs/:jobId/candidates/count', jobsController.jobsController.countCandidate);
+
 export { router };

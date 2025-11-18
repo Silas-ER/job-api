@@ -5,7 +5,7 @@ export const jobsController = {
     index: async (req: e.Request, res: e.Response) => {
         try {
             const jobs = await Job.findAll(
-                { include: ['company'] }
+                { include: ['company', 'candidates'] }
             );
             return res.json(jobs);
         } catch (error) {
@@ -32,13 +32,15 @@ export const jobsController = {
         const { id } = req.params;
 
         try {
-            const job = await Job.findByPk(id , { include: ['company'] });
+            const job = await Job.findByPk(id , { include: ['company', 'candidates'] });
+
 
             if (!job) {
                 return res.status(404).json({ message: 'Job not found' });
             }
 
-            return res.json(job);
+            const candidatesCount = await job?.countCandidates()
+            return res.json({ ...job?.get(), candidatesCount })
         } catch (error) {
             if (error instanceof Error) {
                 return res.status(400).json({ message: error.message });
@@ -84,5 +86,61 @@ export const jobsController = {
                 return res.status(400).json({ message: error.message });
             }
         }
-    }    
+    },
+    
+    addCandidate: async (req: e.Request, res: e.Response) => {
+        const jobId = req.params.jobId;
+        const { candidateId } = req.body;
+
+        try {
+            const job = await Job.findByPk(jobId);
+            if (!job) {
+                return res.status(404).json({ message: 'Job not found' });
+            }
+
+            await job.addCandidate(candidateId);
+            return res.status(200).json({ message: 'Candidate added to job' });
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({ message: error.message });
+            }
+        }
+    },
+
+    removeCandidate: async (req: e.Request, res: e.Response) => {
+        const jobId = req.params.jobId;
+        const { candidateId } = req.body;   
+        
+        try {
+            const job = await Job.findByPk(jobId);
+            if (!job) {
+                return res.status(404).json({ message: 'Job not found' });
+            }
+
+            await job.removeCandidate(candidateId);
+            return res.status(200).json({ message: 'Candidate removed from job' });
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({ message: error.message });
+            }
+        }
+    },
+
+    countCandidate: async (req: e.Request, res: e.Response) => {
+        const jobId = req.params.jobId;
+
+        try {
+            const job = await Job.findByPk(jobId);
+            if (!job) {
+                return res.status(404).json({ message: 'Job not found' });
+            }
+
+            const count = await job.countCandidates();
+            return res.status(200).json({ candidateCount: count });
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({ message: error.message });
+            }
+        }
+    }
 };
