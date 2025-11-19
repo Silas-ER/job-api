@@ -1,18 +1,40 @@
-<div class="card bg-base-100 w-96 shadow-sm">
-  <figure>
-    <img
-      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-      alt="Shoes" />
-  </figure>
-  <div class="card-body">
-    <h2 class="card-title">
-      Card Title
-      <div class="badge badge-secondary">NEW</div>
-    </h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div class="card-actions justify-end">
-      <div class="badge badge-outline">Fashion</div>
-      <div class="badge badge-outline">Products</div>
+<div class="jobs-container">
+  <div class="header">
+    <h1>Vagas Disponíveis</h1>
+    <p>Encontre a oportunidade perfeita para sua carreira</p>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <span>Carregando vagas...</span>
+  </div>
+
+  <div class="jobs-grid" *ngIf="!loading && jobs.length > 0">
+    <div *ngFor="let job of jobs" class="job-card">
+      <div class="card-header">
+        <h3>{{ job.title }}</h3>
+        <span class="company">{{ job.company?.name || 'Empresa não informada' }}</span>
+      </div>
+      
+      <div class="card-body">
+        <p class="description">{{ job.description }}</p>
+        
+        <div class="card-meta">
+          <span class="date">{{ job.limitDate | date:'dd/MM/yyyy' }}</span>
+          <span class="candidates" *ngIf="job.candidates && job.candidates.length > 0">
+            {{ job.candidates.length }} candidatos
+          </span>
+        </div>
+        
+        <button class="btn-primary" (click)="viewJobDetails(job.id)">
+          Ver Detalhes da Vaga
+        </button>
+      </div>
     </div>
+  </div>
+
+  <div *ngIf="!loading && jobs.length === 0" class="empty-state">
+    <h3>Nenhuma vaga encontrada</h3>
+    <p>Não há vagas disponíveis no momento.</p>
   </div>
 </div>

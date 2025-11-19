@@ -8,10 +8,18 @@ import { FooterComponent } from "./components/footer-component/footer-component"
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, PaginateComponent, ListComponent, CardComponent, FooterComponent],
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    HeaderComponent, 
+    PaginateComponent, 
+    ListComponent, 
+    CardComponent, 
+    FooterComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly title = signal('Jobs API Frontend');
 }
