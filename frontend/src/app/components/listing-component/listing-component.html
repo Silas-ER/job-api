@@ -1,0 +1,42 @@
+<div class="listing-container">
+  <div class="header">
+    <h1>{{ getPageTitle() }}</h1>
+    <p>{{ getPageSubtitle() }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <span>Carregando {{ listingType === 'jobs' ? 'vagas' : 'empresas' }}...</span>
+  </div>
+
+  <div class="items-grid" *ngIf="!loading && items.length > 0">
+    <div *ngFor="let item of items" class="item-card">
+      <div class="card-header">
+        <h3>{{ item.title }}</h3>
+        <span class="subtitle">{{ item.subtitle }}</span>
+      </div>
+      
+      <div class="card-body">
+        <p class="description">{{ item.description }}</p>
+        
+        <div class="card-meta">
+          <span class="meta" *ngIf="item.meta">
+            {{ listingType === 'jobs' ? (item.meta | date:'dd/MM/yyyy') : item.meta }}
+          </span>
+          <span class="additional-info" *ngIf="item.additionalInfo">
+            {{ item.additionalInfo }}
+          </span>
+        </div>
+        
+        <button class="btn-primary" (click)="viewItemDetails(item.id)">
+          {{ getButtonText() }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && items.length === 0" class="empty-state">
+    <h3>Nenhum{{ listingType === 'jobs' ? 'a vaga' : 'a empresa' }} encontrada</h3>
+    <p>Não há {{ listingType === 'jobs' ? 'vagas' : 'empresas' }} disponíveis no momento.</p>
+  </div>
+</div>
